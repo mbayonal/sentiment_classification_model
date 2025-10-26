@@ -1,0 +1,38 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: python src/data/download_data.py
+    deps:
+    - path: src/data/download_data.py
+      hash: md5
+      md5: a528cc36ec85007ed9611b2f8a46c362
+      size: 1451
+    outs:
+    - path: data/raw/name.basics.tsv.gz
+      hash: md5
+      md5: 7802c15f8d31d30a3f49e3d33ff1185d
+      size: 292357458
+    - path: data/raw/title.akas.tsv.gz
+      hash: md5
+      md5: 4791d2d3f46adf5e33dadded0c0fb18c
+      size: 466402397
+    - path: data/raw/title.basics.tsv.gz
+      hash: md5
+      md5: e793f6c22bbb4318dc6bfaf89c2309c6
+      size: 212642787
+    - path: data/raw/title.crew.tsv.gz
+      hash: md5
+      md5: 3d70b5f6871dd47a0c8ce03592f3c458
+      size: 78395311
+    - path: data/raw/title.episode.tsv.gz
+      hash: md5
+      md5: 1f64c3cfa2d143bd1c641825689baeac
+      size: 51108822
+    - path: data/raw/title.principals.tsv.gz
+      hash: md5
+      md5: 5786159b9077181e8b031728273793e4
+      size: 737088930
+    - path: data/raw/title.ratings.tsv.gz
+      hash: md5
+      md5: 1a15af784e90db67291b594f84de0e95
+      size: 8203729

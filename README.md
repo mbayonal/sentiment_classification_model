@@ -2,6 +2,10 @@
 
 This repository contains the IMDB dataset managed with Data Version Control (DVC). The dataset includes information about movies, TV shows, and other media from the Internet Movie Database.
 
+## Data Sampling
+
+To keep the dataset size manageable for AWS free tier storage limits, the data is sampled to ensure each file is less than 100 MB. The sampling ratios can be configured in the `params.yaml` file.
+
 ## Dataset Description
 
 The dataset consists of several TSV files containing different aspects of the IMDB database:
@@ -83,9 +87,26 @@ The dataset consists of several TSV files containing different aspects of the IM
 
 1. Clone this repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Initialize DVC: `dvc init`
-4. Add data: `dvc add data/raw/<file>`
-5. Pull the data: `dvc pull`
+3. Initialize DVC: `dvc init` (already done in this repository)
+4. Adjust sampling parameters in `params.yaml` if needed
+5. Run the DVC pipeline: `dvc repro`
+
+### Customizing Data Sampling
+
+You can adjust the sampling parameters in the `params.yaml` file:
+
+```yaml
+# Target size in MB for each file (maximum size)
+TARGET_SIZE_MB: 100
+
+# Sampling ratios for each file
+SAMPLING_RATIOS:
+  title.akas.tsv.gz: 0.05      # 5% of original
+  title.basics.tsv.gz: 0.1     # 10% of original
+  # ... other files
+```
+
+Increasing the sampling ratios will include more data but result in larger file sizes.
 
 ## DVC Pipeline
 

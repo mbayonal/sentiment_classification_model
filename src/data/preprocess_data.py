@@ -2,13 +2,20 @@
 # -*- coding: utf-8 -*-
 
 """
-Script to preprocess IMDB dataset files.
+Script to preprocess sampled IMDB dataset files.
 """
 
 import os
 import pandas as pd
 import gzip
 from pathlib import Path
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 # List of files to process
 FILES = [
@@ -31,8 +38,17 @@ def read_gz_tsv(file_path):
     Returns:
         pandas.DataFrame: DataFrame containing the data
     """
-    print(f"Reading {file_path}")
-    return pd.read_csv(file_path, sep='\t', low_memory=False)
+    logging.info(f"Reading {file_path}")
+    try:
+        # Try with low_memory=False first
+        return pd.read_csv(file_path, sep='\t', low_memory=False)
+    except Exception as e:
+        logging.warning(f"Error reading {file_path} with low_memory=False: {e}")
+        logging.info("Trying again with low_memory=True and chunksize")
+        
+        # Try reading in chunks
+        chunks = pd.read_csv(file_path, sep='\t', low_memory=True, chunksize=100000)
+        return pd.concat(chunks)
 
 def preprocess_title_basics(df):
     """
@@ -44,6 +60,8 @@ def preprocess_title_basics(df):
     Returns:
         pandas.DataFrame: Preprocessed DataFrame
     """
+    logging.info("Preprocessing title.basics data")
+    
     # Convert startYear and endYear to numeric, handling '\N' values
     df['startYear'] = pd.to_numeric(df['startYear'].replace('\\N', pd.NA), errors='coerce')
     df['endYear'] = pd.to_numeric(df['endYear'].replace('\\N', pd.NA), errors='coerce')
@@ -55,7 +73,7 @@ def preprocess_title_basics(df):
     df['isAdult'] = df['isAdult'].astype(bool)
     
     # Split genres into a list
-    df['genres'] = df['genres'].apply(lambda x: x.split(',') if x != '\\N' else [])
+    df['genres'] = df['genres'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
     
     return df
 
@@ -69,6 +87,8 @@ def preprocess_title_ratings(df):
     Returns:
         pandas.DataFrame: Preprocessed DataFrame
     """
+    logging.info("Preprocessing title.ratings data")
+    
     # Convert averageRating and numVotes to numeric
     df['averageRating'] = pd.to_numeric(df['averageRating'], errors='coerce')
     df['numVotes'] = pd.to_numeric(df['numVotes'], errors='coerce')
@@ -85,13 +105,95 @@ def preprocess_name_basics(df):
     Returns:
         pandas.DataFrame: Preprocessed DataFrame
     """
+    logging.info("Preprocessing name.basics data")
+    
     # Convert birthYear and deathYear to numeric, handling '\N' values
     df['birthYear'] = pd.to_numeric(df['birthYear'].replace('\\N', pd.NA), errors='coerce')
     df['deathYear'] = pd.to_numeric(df['deathYear'].replace('\\N', pd.NA), errors='coerce')
     
     # Split primaryProfession and knownForTitles into lists
-    df['primaryProfession'] = df['primaryProfession'].apply(lambda x: x.split(',') if x != '\\N' else [])
-    df['knownForTitles'] = df['knownForTitles'].apply(lambda x: x.split(',') if x != '\\N' else [])
+    df['primaryProfession'] = df['primaryProfession'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    df['knownForTitles'] = df['knownForTitles'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    
+    return df
+
+def preprocess_title_akas(df):
+    """
+    Preprocess title.akas.tsv.gz file.
+    
+    Args:
+        df (pandas.DataFrame): DataFrame containing title.akas data
+        
+    Returns:
+        pandas.DataFrame: Preprocessed DataFrame
+    """
+    logging.info("Preprocessing title.akas data")
+    
+    # Convert ordering to numeric
+    df['ordering'] = pd.to_numeric(df['ordering'], errors='coerce')
+    
+    # Convert isOriginalTitle to boolean
+    df['isOriginalTitle'] = df['isOriginalTitle'].astype(bool)
+    
+    # Handle types and attributes arrays
+    df['types'] = df['types'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    df['attributes'] = df['attributes'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    
+    return df
+
+def preprocess_title_crew(df):
+    """
+    Preprocess title.crew.tsv.gz file.
+    
+    Args:
+        df (pandas.DataFrame): DataFrame containing title.crew data
+        
+    Returns:
+        pandas.DataFrame: Preprocessed DataFrame
+    """
+    logging.info("Preprocessing title.crew data")
+    
+    # Split directors and writers into lists
+    df['directors'] = df['directors'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    df['writers'] = df['writers'].apply(lambda x: x.split(',') if isinstance(x, str) and x != '\\N' else [])
+    
+    return df
+
+def preprocess_title_episode(df):
+    """
+    Preprocess title.episode.tsv.gz file.
+    
+    Args:
+        df (pandas.DataFrame): DataFrame containing title.episode data
+        
+    Returns:
+        pandas.DataFrame: Preprocessed DataFrame
+    """
+    logging.info("Preprocessing title.episode data")
+    
+    # Convert seasonNumber and episodeNumber to numeric
+    df['seasonNumber'] = pd.to_numeric(df['seasonNumber'].replace('\\N', pd.NA), errors='coerce')
+    df['episodeNumber'] = pd.to_numeric(df['episodeNumber'].replace('\\N', pd.NA), errors='coerce')
+    
+    return df
+
+def preprocess_title_principals(df):
+    """
+    Preprocess title.principals.tsv.gz file.
+    
+    Args:
+        df (pandas.DataFrame): DataFrame containing title.principals data
+        
+    Returns:
+        pandas.DataFrame: Preprocessed DataFrame
+    """
+    logging.info("Preprocessing title.principals data")
+    
+    # Convert ordering to numeric
+    df['ordering'] = pd.to_numeric(df['ordering'], errors='coerce')
+    
+    # Handle characters field (might be JSON-like string)
+    df['characters'] = df['characters'].apply(lambda x: x if isinstance(x, str) and x != '\\N' else None)
     
     return df
 
@@ -110,24 +212,41 @@ def main():
         
         # Skip if input file doesn't exist
         if not input_path.exists():
-            print(f"File {input_path} doesn't exist. Skipping preprocessing.")
+            logging.warning(f"File {input_path} doesn't exist. Skipping preprocessing.")
             continue
         
-        # Read the file
-        df = read_gz_tsv(input_path)
+        # Skip if output file already exists
+        if output_path.exists():
+            logging.info(f"File {output_path} already exists. Skipping preprocessing.")
+            continue
         
-        # Apply specific preprocessing based on the file
-        if 'title.basics' in file:
-            df = preprocess_title_basics(df)
-        elif 'title.ratings' in file:
-            df = preprocess_title_ratings(df)
-        elif 'name.basics' in file:
-            df = preprocess_name_basics(df)
-        
-        # Save the preprocessed file
-        print(f"Saving preprocessed data to {output_path}")
-        df.to_csv(output_path, sep='\t', index=False)
-        print(f"Saved {output_path}")
+        try:
+            # Read the file
+            df = read_gz_tsv(input_path)
+            
+            # Apply specific preprocessing based on the file
+            if 'title.basics' in file:
+                df = preprocess_title_basics(df)
+            elif 'title.ratings' in file:
+                df = preprocess_title_ratings(df)
+            elif 'name.basics' in file:
+                df = preprocess_name_basics(df)
+            elif 'title.akas' in file:
+                df = preprocess_title_akas(df)
+            elif 'title.crew' in file:
+                df = preprocess_title_crew(df)
+            elif 'title.episode' in file:
+                df = preprocess_title_episode(df)
+            elif 'title.principals' in file:
+                df = preprocess_title_principals(df)
+            
+            # Save the preprocessed file
+            logging.info(f"Saving preprocessed data to {output_path}")
+            df.to_csv(output_path, sep='\t', index=False)
+            logging.info(f"Saved {output_path}")
+            
+        except Exception as e:
+            logging.error(f"Error processing {file}: {e}")
 
 if __name__ == "__main__":
     main()

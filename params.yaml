@@ -1,0 +1,12 @@
+# Target size in MB for each file (maximum size)
+TARGET_SIZE_MB: 100
+
+# Sampling ratios for each file
+SAMPLING_RATIOS:
+  title.akas.tsv.gz: 0.05      # 5% of original
+  title.basics.tsv.gz: 0.1     # 10% of original
+  title.crew.tsv.gz: 0.1       # 10% of original
+  title.episode.tsv.gz: 0.1    # 10% of original
+  title.principals.tsv.gz: 0.05 # 5% of original
+  title.ratings.tsv.gz: 0.2    # 20% of original
+  name.basics.tsv.gz: 0.05     # 5% of original
