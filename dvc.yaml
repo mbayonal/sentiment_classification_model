@@ -1,0 +1,42 @@
+stages:
+  download_data:
+    cmd: python src/data/download_data.py
+    deps:
+      - src/data/download_data.py
+    outs:
+      - data/raw/title.akas.tsv.gz
+      - data/raw/title.basics.tsv.gz
+      - data/raw/title.crew.tsv.gz
+      - data/raw/title.episode.tsv.gz
+      - data/raw/title.principals.tsv.gz
+      - data/raw/title.ratings.tsv.gz
+      - data/raw/name.basics.tsv.gz
+
+  preprocess_data:
+    cmd: python src/data/preprocess_data.py
+    deps:
+      - src/data/preprocess_data.py
+      - data/raw/title.akas.tsv.gz
+      - data/raw/title.basics.tsv.gz
+      - data/raw/title.crew.tsv.gz
+      - data/raw/title.episode.tsv.gz
+      - data/raw/title.principals.tsv.gz
+      - data/raw/title.ratings.tsv.gz
+      - data/raw/name.basics.tsv.gz
+    outs:
+      - data/processed/title.akas.tsv
+      - data/processed/title.basics.tsv
+      - data/processed/title.crew.tsv
+      - data/processed/title.episode.tsv
+      - data/processed/title.principals.tsv
+      - data/processed/title.ratings.tsv
+      - data/processed/name.basics.tsv
+
+  build_features:
+    cmd: python src/features/build_features.py
+    deps:
+      - src/features/build_features.py
+      - data/processed/title.basics.tsv
+      - data/processed/title.ratings.tsv
+    outs:
+      - data/processed/features/movie_features.csv
