@@ -5,21 +5,32 @@ stages:
     deps:
     - path: src/data/download_data.py
       hash: md5
-      md5: a528cc36ec85007ed9611b2f8a46c362
-      size: 1451
+      md5: 2607481cd7a47edb0c5cef40c24f6209
+      size: 6460
+    params:
+      params.yaml:
+        SAMPLING_RATIOS:
+          title.akas.tsv.gz: 0.05
+          title.basics.tsv.gz: 0.1
+          title.crew.tsv.gz: 0.1
+          title.episode.tsv.gz: 0.1
+          title.principals.tsv.gz: 0.05
+          title.ratings.tsv.gz: 0.2
+          name.basics.tsv.gz: 0.05
+        TARGET_SIZE_MB: 100
     outs:
     - path: data/raw/name.basics.tsv.gz
       hash: md5
-      md5: 7802c15f8d31d30a3f49e3d33ff1185d
-      size: 292357458
+      md5: 6c4ae862085afc18d4de274bc806ae09
+      size: 18326605
     - path: data/raw/title.akas.tsv.gz
       hash: md5
-      md5: 4791d2d3f46adf5e33dadded0c0fb18c
-      size: 466402397
+      md5: e719be3bb0ab176da08e2aa10d83fe8f
+      size: 38198798
     - path: data/raw/title.basics.tsv.gz
       hash: md5
-      md5: e793f6c22bbb4318dc6bfaf89c2309c6
-      size: 212642787
+      md5: 78d85b2c7d35f6e34404c6e61c0fdb1c
+      size: 28782729
     - path: data/raw/title.crew.tsv.gz
       hash: md5
       md5: 3d70b5f6871dd47a0c8ce03592f3c458
@@ -30,9 +41,93 @@ stages:
       size: 51108822
     - path: data/raw/title.principals.tsv.gz
       hash: md5
-      md5: 5786159b9077181e8b031728273793e4
-      size: 737088930
+      md5: 6db94f9d8c4836f55ac43cc62fdb5b94
+      size: 74522152
     - path: data/raw/title.ratings.tsv.gz
       hash: md5
       md5: 1a15af784e90db67291b594f84de0e95
       size: 8203729
+  preprocess_data:
+    cmd: python src/data/preprocess_data.py
+    deps:
+    - path: data/raw/name.basics.tsv.gz
+      hash: md5
+      md5: 6c4ae862085afc18d4de274bc806ae09
+      size: 18326605
+    - path: data/raw/title.akas.tsv.gz
+      hash: md5
+      md5: e719be3bb0ab176da08e2aa10d83fe8f
+      size: 38198798
+    - path: data/raw/title.basics.tsv.gz
+      hash: md5
+      md5: 78d85b2c7d35f6e34404c6e61c0fdb1c
+      size: 28782729
+    - path: data/raw/title.crew.tsv.gz
+      hash: md5
+      md5: 3d70b5f6871dd47a0c8ce03592f3c458
+      size: 78395311
+    - path: data/raw/title.episode.tsv.gz
+      hash: md5
+      md5: 1f64c3cfa2d143bd1c641825689baeac
+      size: 51108822
+    - path: data/raw/title.principals.tsv.gz
+      hash: md5
+      md5: 6db94f9d8c4836f55ac43cc62fdb5b94
+      size: 74522152
+    - path: data/raw/title.ratings.tsv.gz
+      hash: md5
+      md5: 1a15af784e90db67291b594f84de0e95
+      size: 8203729
+    - path: src/data/preprocess_data.py
+      hash: md5
+      md5: d93bc7ae812adc67a63d87bebb887635
+      size: 8166
+    outs:
+    - path: data/processed/name.basics.tsv
+      hash: md5
+      md5: 97cf204b757750afd204e98242a28749
+      size: 50792748
+    - path: data/processed/title.akas.tsv
+      hash: md5
+      md5: 5432617b1ac39cb98bba49123c0473cb
+      size: 150913621
+    - path: data/processed/title.basics.tsv
+      hash: md5
+      md5: ee322be0417190e9ac13a8cb7783e943
+      size: 115403339
+    - path: data/processed/title.crew.tsv
+      hash: md5
+      md5: dc8c4602450995409d2e6d46a806e112
+      size: 490708066
+    - path: data/processed/title.episode.tsv
+      hash: md5
+      md5: 068010eb57b5e95cf9e978d2d6c23e89
+      size: 273761916
+    - path: data/processed/title.principals.tsv
+      hash: md5
+      md5: d0e16d88eb2d35b8ed7690138615cd62
+      size: 221984084
+    - path: data/processed/title.ratings.tsv
+      hash: md5
+      md5: 694cd78af4deaaba574dfee97221db81
+      size: 30010830
+  build_features:
+    cmd: python src/features/build_features.py
+    deps:
+    - path: data/processed/title.basics.tsv
+      hash: md5
+      md5: ee322be0417190e9ac13a8cb7783e943
+      size: 115403339
+    - path: data/processed/title.ratings.tsv
+      hash: md5
+      md5: 694cd78af4deaaba574dfee97221db81
+      size: 30010830
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 37a5eebd1664a49245784fff9db00ca3
+      size: 4738
+    outs:
+    - path: data/processed/features/movie_features.csv
+      hash: md5
+      md5: 656eb0aa21d8be49be526635c266795e
+      size: 8721286
