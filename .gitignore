@@ -75,3 +75,6 @@ venv.bak/
 # OS specific
 .DS_Store
 Thumbs.db
+
+# AWS credentials
+aws_credentials.txt
