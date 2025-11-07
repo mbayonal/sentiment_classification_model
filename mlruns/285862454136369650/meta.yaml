@@ -1,0 +1,6 @@
+artifact_location: file:///home/manuel-bayona/MIAD-uniandes/Despliegues/sentiment_classification_model/mlruns/285862454136369650
+creation_time: 1762528798278
+experiment_id: '285862454136369650'
+last_update_time: 1762528798278
+lifecycle_stage: active
+name: imdb-rating-classification

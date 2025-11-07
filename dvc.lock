@@ -21,63 +21,63 @@ stages:
     outs:
     - path: data/raw/name.basics.tsv.gz
       hash: md5
-      md5: 6c4ae862085afc18d4de274bc806ae09
-      size: 18326605
+      md5: 21dd9c76b31826c2a62774798d04c1c6
+      size: 18317969
     - path: data/raw/title.akas.tsv.gz
       hash: md5
-      md5: e719be3bb0ab176da08e2aa10d83fe8f
-      size: 38198798
+      md5: 71275864a288a81626128f0bf111dc72
+      size: 38263064
     - path: data/raw/title.basics.tsv.gz
       hash: md5
-      md5: 78d85b2c7d35f6e34404c6e61c0fdb1c
-      size: 28782729
+      md5: 1353a147f8faef5a2f426a3eceffddd0
+      size: 28843192
     - path: data/raw/title.crew.tsv.gz
       hash: md5
-      md5: 3d70b5f6871dd47a0c8ce03592f3c458
-      size: 78395311
+      md5: 76a4810d9f4e1d70f450cec5d3b1b968
+      size: 78610871
     - path: data/raw/title.episode.tsv.gz
       hash: md5
-      md5: 1f64c3cfa2d143bd1c641825689baeac
-      size: 51108822
+      md5: c9dfa1540e395488dff4e4cb0f927251
+      size: 51303824
     - path: data/raw/title.principals.tsv.gz
       hash: md5
-      md5: 6db94f9d8c4836f55ac43cc62fdb5b94
-      size: 74522152
+      md5: b7c1552a4aadef913cb1811336a0af5e
+      size: 74276796
     - path: data/raw/title.ratings.tsv.gz
       hash: md5
-      md5: 1a15af784e90db67291b594f84de0e95
-      size: 8203729
+      md5: 09a9b0530cc8e2edde2be8ba59c63c52
+      size: 8229524
   preprocess_data:
     cmd: python src/data/preprocess_data.py
     deps:
     - path: data/raw/name.basics.tsv.gz
       hash: md5
-      md5: 6c4ae862085afc18d4de274bc806ae09
-      size: 18326605
+      md5: 21dd9c76b31826c2a62774798d04c1c6
+      size: 18317969
     - path: data/raw/title.akas.tsv.gz
       hash: md5
-      md5: e719be3bb0ab176da08e2aa10d83fe8f
-      size: 38198798
+      md5: 71275864a288a81626128f0bf111dc72
+      size: 38263064
     - path: data/raw/title.basics.tsv.gz
       hash: md5
-      md5: 78d85b2c7d35f6e34404c6e61c0fdb1c
-      size: 28782729
+      md5: 1353a147f8faef5a2f426a3eceffddd0
+      size: 28843192
     - path: data/raw/title.crew.tsv.gz
       hash: md5
-      md5: 3d70b5f6871dd47a0c8ce03592f3c458
-      size: 78395311
+      md5: 76a4810d9f4e1d70f450cec5d3b1b968
+      size: 78610871
     - path: data/raw/title.episode.tsv.gz
       hash: md5
-      md5: 1f64c3cfa2d143bd1c641825689baeac
-      size: 51108822
+      md5: c9dfa1540e395488dff4e4cb0f927251
+      size: 51303824
     - path: data/raw/title.principals.tsv.gz
       hash: md5
-      md5: 6db94f9d8c4836f55ac43cc62fdb5b94
-      size: 74522152
+      md5: b7c1552a4aadef913cb1811336a0af5e
+      size: 74276796
     - path: data/raw/title.ratings.tsv.gz
       hash: md5
-      md5: 1a15af784e90db67291b594f84de0e95
-      size: 8203729
+      md5: 09a9b0530cc8e2edde2be8ba59c63c52
+      size: 8229524
     - path: src/data/preprocess_data.py
       hash: md5
       md5: d93bc7ae812adc67a63d87bebb887635
@@ -85,43 +85,43 @@ stages:
     outs:
     - path: data/processed/name.basics.tsv
       hash: md5
-      md5: 97cf204b757750afd204e98242a28749
-      size: 50792748
+      md5: cc5ee1239f7205f55daa22213dfd25d0
+      size: 50372086
     - path: data/processed/title.akas.tsv
       hash: md5
-      md5: 5432617b1ac39cb98bba49123c0473cb
-      size: 150913621
+      md5: 7e8d1a690a1728c30bb969e71f1ee23f
+      size: 148847166
     - path: data/processed/title.basics.tsv
       hash: md5
-      md5: ee322be0417190e9ac13a8cb7783e943
-      size: 115403339
+      md5: 3f02ce1ff05f6ae04ed002bcf6357a79
+      size: 114585081
     - path: data/processed/title.crew.tsv
       hash: md5
-      md5: dc8c4602450995409d2e6d46a806e112
-      size: 490708066
+      md5: 462e4e95e7b805709deb002f9446a7bf
+      size: 479953130
     - path: data/processed/title.episode.tsv
       hash: md5
-      md5: 068010eb57b5e95cf9e978d2d6c23e89
-      size: 273761916
+      md5: 1568aa4fbdd52e5b3f723e35583194c5
+      size: 265549318
     - path: data/processed/title.principals.tsv
       hash: md5
-      md5: d0e16d88eb2d35b8ed7690138615cd62
-      size: 221984084
+      md5: 4300c1b62a230572543687bd3811313f
+      size: 217780287
     - path: data/processed/title.ratings.tsv
       hash: md5
-      md5: 694cd78af4deaaba574dfee97221db81
-      size: 30010830
+      md5: 5713dfafab27db133aeeccfd5f620c45
+      size: 28472361
   build_features:
     cmd: python src/features/build_features.py
     deps:
     - path: data/processed/title.basics.tsv
       hash: md5
-      md5: ee322be0417190e9ac13a8cb7783e943
-      size: 115403339
+      md5: 3f02ce1ff05f6ae04ed002bcf6357a79
+      size: 114585081
     - path: data/processed/title.ratings.tsv
       hash: md5
-      md5: 694cd78af4deaaba574dfee97221db81
-      size: 30010830
+      md5: 5713dfafab27db133aeeccfd5f620c45
+      size: 28472361
     - path: src/features/build_features.py
       hash: md5
       md5: 37a5eebd1664a49245784fff9db00ca3
@@ -129,5 +129,36 @@ stages:
     outs:
     - path: data/processed/features/movie_features.csv
       hash: md5
-      md5: 656eb0aa21d8be49be526635c266795e
-      size: 8721286
+      md5: 259ca5e69a4c0396c8a34630fc5ce184
+      size: 8646556
+  train_rating_classifier:
+    cmd: python src/models/train_rating_classifier.py
+    deps:
+    - path: data/processed/features/movie_features.csv
+      hash: md5
+      md5: 259ca5e69a4c0396c8a34630fc5ce184
+      size: 8646556
+    - path: src/models/train_rating_classifier.py
+      hash: md5
+      md5: c553a5bac3d7c10aeb0e1c9b82b77e72
+      size: 8073
+    params:
+      params.yaml:
+        rating_classifier:
+          test_size: 0.2
+          random_state: 42
+          logistic_regression:
+            C: 1.0
+            max_iter: 1000
+          linear_svm:
+            C: 1.0
+            max_iter: 2000
+    outs:
+    - path: models/best_model.pkl
+      hash: md5
+      md5: d026e1cc892db712c40e1d2656a66b51
+      size: 4822
+    - path: models/best_model_metadata.json
+      hash: md5
+      md5: c07b0e5d7c4a10e1206a1e8902cc2d5d
+      size: 557

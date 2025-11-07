@@ -7,7 +7,6 @@ stages:
       - TARGET_SIZE_MB
       - SAMPLING_RATIOS
     outs:
-      - data/raw/title.akas.tsv.gz
       - data/raw/title.basics.tsv.gz
       - data/raw/title.crew.tsv.gz
       - data/raw/title.episode.tsv.gz
@@ -19,7 +18,6 @@ stages:
     cmd: python src/data/preprocess_data.py
     deps:
       - src/data/preprocess_data.py
-      - data/raw/title.akas.tsv.gz
       - data/raw/title.basics.tsv.gz
       - data/raw/title.crew.tsv.gz
       - data/raw/title.episode.tsv.gz
@@ -43,3 +41,14 @@ stages:
       - data/processed/title.ratings.tsv
     outs:
       - data/processed/features/movie_features.csv
+
+  train_rating_classifier:
+    cmd: python src/models/train_rating_classifier.py
+    deps:
+      - src/models/train_rating_classifier.py
+      - data/processed/features/movie_features.csv
+    params:
+      - rating_classifier
+    outs:
+      - models/best_model.pkl
+      - models/best_model_metadata.json

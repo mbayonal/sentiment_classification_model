@@ -10,3 +10,18 @@ SAMPLING_RATIOS:
   title.principals.tsv.gz: 0.05 # 5% of original
   title.ratings.tsv.gz: 0.2    # 20% of original
   name.basics.tsv.gz: 0.05     # 5% of original
+
+# Rating category classification parameters
+rating_classifier:
+  test_size: 0.2
+  random_state: 42
+  
+  # Logistic Regression (multiclass)
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+  
+  # Linear SVM (multiclass)
+  linear_svm:
+    C: 1.0
+    max_iter: 2000

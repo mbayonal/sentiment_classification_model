@@ -1,14 +1,45 @@
-# IMDB Dataset DVC Repository
+# IMDb Rating Category Classifier
 
-This repository contains the IMDB dataset managed with Data Version Control (DVC). The dataset includes information about movies, TV shows, and other media from the Internet Movie Database.
+**Clasificación automática de categoría de rating en películas IMDb**
 
-## Data Sampling
+Proyecto MLOps - Grupo 21
 
-To keep the dataset size manageable for AWS free tier storage limits, the data is sampled to ensure each file is less than 100 MB. The sampling ratios can be configured in the `params.yaml` file.
+## 📋 Descripción
 
-## Dataset Description
+Este repositorio contiene el pipeline completo de datos y entrenamiento de modelos para clasificar películas de IMDb en categorías de rating (Poor, Average, Good, Excellent) basándose en sus características.
 
-The dataset consists of several TSV files containing different aspects of the IMDB database:
+## 🎯 Objetivo
+
+Predecir automáticamente la categoría de rating de una película basándose en sus características:
+- **Poor**: Rating < 4
+- **Average**: Rating 4-6
+- **Good**: Rating 6-8  
+- **Excellent**: Rating > 8
+
+## 🏗️ Arquitectura del Proyecto
+
+```
+.
+├── data/
+│   ├── raw/              # Datos crudos de IMDb
+│   ├── processed/        # Datos preprocesados
+│   └── reviews/          # Reseñas (si aplica)
+├── models/               # Modelos entrenados (.pkl)
+├── mlruns/               # Experimentos MLflow
+├── src/
+│   ├── data/            # Scripts de descarga y preprocesamiento
+│   ├── features/        # Feature engineering
+│   └── models/          # Scripts de entrenamiento
+├── dvc.yaml             # Pipeline DVC
+├── params.yaml          # Parámetros de configuración
+└── requirements.txt     # Dependencias Python
+```
+
+## 📊 Dataset
+
+El proyecto utiliza dos fuentes de datos de IMDb:
+
+### 1. Metadatos de IMDb (para features)
 
 - **title.akas.tsv.gz**: Alternative titles for media
   - titleId (string) - a tconst, an alphanumeric unique identifier of the title
@@ -63,33 +94,61 @@ The dataset consists of several TSV files containing different aspects of the IM
   - primaryProfession (array of strings)– the top-3 professions of the person
   - knownForTitles (array of tconsts) – titles the person is known for
 
-## Repository Structure
+## 🚀 Instalación y Uso
 
-```
-.
-├── data/
-│   ├── raw/       # Raw data files
-│   └── processed/  # Processed data files
-├── models/         # Trained models
-├── notebooks/      # Jupyter notebooks
-├── src/            # Source code
-│   ├── data/       # Scripts for data processing
-│   ├── features/   # Scripts for feature engineering
-│   └── models/     # Scripts for model training
-├── .dvc/           # DVC configuration
-├── .gitignore      # Git ignore file
-├── dvc.yaml        # DVC pipeline definition
-├── requirements.txt # Python dependencies
-└── README.md       # This file
+### Requisitos Previos
+- Python 3.12+
+- Git
+- DVC (Data Version Control)
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/mbayonal/sentiment_classification_model.git
+cd sentiment_classification_model
 ```
 
-## Setup
+### 2. Crear entorno virtual e instalar dependencias
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # En Windows: .venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Initialize DVC: `dvc init` (already done in this repository)
-4. Adjust sampling parameters in `params.yaml` if needed
-5. Run the DVC pipeline: `dvc repro`
+### 3. Ejecutar el pipeline DVC
+```bash
+# Ejecutar todo el pipeline
+dvc repro
+
+# O ejecutar etapas específicas
+dvc repro download_data      # Descargar datos de IMDb
+dvc repro preprocess_data    # Preprocesar datos
+dvc repro build_features     # Generar features
+dvc repro train_rating_classifier  # Entrenar modelos
+```
+
+## 🎓 Modelos Entrenados
+
+### Algoritmos Implementados
+- **Logistic Regression** (multiclase): Mejor desempeño
+- **Linear SVM** (multiclase)
+
+### Resultados del Mejor Modelo
+- **Modelo**: Logistic Regression
+- **Accuracy**: 99.99%
+- **F1 Score (weighted)**: 0.9999
+- **Features utilizadas**: 
+  - startYear
+  - runtimeMinutes
+  - numVotes
+  - averageRating
+  - runtime_category
+  - popularity
+
+### Artefactos Generados
+- `models/best_model.pkl` - Modelo serializado listo para producción
+- `models/best_model_metadata.json` - Métricas y metadata del modelo
+- `mlruns/` - Experimentos completos registrados en MLflow
 
 ### Customizing Data Sampling
 
@@ -108,24 +167,47 @@ SAMPLING_RATIOS:
 
 Increasing the sampling ratios will include more data but result in larger file sizes.
 
-## DVC Pipeline
+## 📈 MLflow Tracking
 
-The DVC pipeline consists of the following stages:
+Todos los experimentos están registrados en MLflow:
 
-1. Data download
-2. Data preprocessing
-3. Feature extraction
-4. Model training
-5. Model evaluation
+```bash
+# Ver experimentos en la UI de MLflow
+mlflow ui
 
-To run the entire pipeline:
-
-```
-dvc repro
+# Acceder a: http://localhost:5000
 ```
 
-To run a specific stage:
+## 📝 Configuración (params.yaml)
 
+El archivo `params.yaml` contiene todos los parámetros configurables:
+
+```yaml
+rating_classifier:
+  test_size: 0.2
+  random_state: 42
+  
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+  
+  linear_svm:
+    C: 1.0
+    max_iter: 2000
 ```
-dvc repro <stage_name>
-```
+
+## 👥 Equipo - Grupo 21
+
+- **Luis Felipe González** - Data Manager/MLOps (DVC/versionado)
+- **Daniel Ricardo Marín** - Data Scientist (calidad/limpieza)
+- **Manuel Alejandro Bayona** - Cloud Engineer (S3, backups)
+- **Fabián Jiménez** - BI Analyst (visualización/dashboard)
+
+## 📄 Licencia
+
+Este proyecto es parte del curso de MLOps - MIAD Universidad de los Andes.
+
+## 🔗 Repositorios Relacionados
+
+- [API REST](https://github.com/mbayonal/api_imdb) - Servicio de predicción con FastAPI
+- [Dashboard](https://github.com/mbayonal/dashboard_imdb) - Interfaz web con Streamlit
