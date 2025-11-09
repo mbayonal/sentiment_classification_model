@@ -195,6 +195,29 @@ rating_classifier:
     C: 1.0
     max_iter: 2000
 ```
+## Troubleshooting y buenas prácticas de ejecución
+
+### Errores frecuentes con DVC
+
+- **Error de caché no encontrada (`cache missing`)**  
+  - Ejecuta: `dvc pull` para traer los artefactos desde el remoto configurado.  
+  - Si el remoto no está configurado, revisa la sección de `remote` en `dvc.yaml` y valida que las credenciales existan.
+
+- **Cambios en `params.yaml` que no se reflejan en el entrenamiento**  
+  - Asegúrate de correr `dvc repro` completo o al menos las etapas que dependen de esos parámetros.  
+  - Usa `dvc dag` para visualizar el grafo de dependencias y entender qué etapas deben ejecutarse.
+
+- **Problemas de espacio en disco con los datos de IMDb**  
+  - Ajusta las tasas de muestreo en `params.yaml` (sección `SAMPLING_RATIOS`) para reducir el tamaño de los archivos.  
+  - Limpia caché antigua con `dvc gc` (después de validar que no perderás versiones importantes).
+
+### Recomendaciones para MLflow
+
+- Levantar la UI localmente:
+
+  ```bash
+  mlflow ui --backend-store-uri sqlite:///mlruns.db --default-artifact-root ./mlruns
+
 
 ## 👥 Equipo - Grupo 21
 
