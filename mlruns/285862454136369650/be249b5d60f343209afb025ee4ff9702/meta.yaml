@@ -1,0 +1,14 @@
+artifact_uri: file:///home/manuel-bayona/MIAD-uniandes/Despliegues/sentiment_classification_model/mlruns/285862454136369650/be249b5d60f343209afb025ee4ff9702/artifacts
+end_time: 1762743399982
+entry_point_name: ''
+experiment_id: '285862454136369650'
+lifecycle_stage: active
+run_id: be249b5d60f343209afb025ee4ff9702
+run_name: linear_svm
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762743394684
+status: 3
+tags: []
+user_id: usuario

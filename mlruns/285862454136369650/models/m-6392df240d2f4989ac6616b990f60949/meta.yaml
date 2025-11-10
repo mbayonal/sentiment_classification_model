@@ -1,0 +1,10 @@
+artifact_location: file:///home/manuel-bayona/MIAD-uniandes/Despliegues/sentiment_classification_model/mlruns/285862454136369650/models/m-6392df240d2f4989ac6616b990f60949/artifacts
+creation_timestamp: 1762743379547
+experiment_id: '285862454136369650'
+last_updated_timestamp: 1762743394654
+model_id: m-6392df240d2f4989ac6616b990f60949
+model_type: null
+name: model
+source_run_id: 4eb47fb3c7054170a60bda08dd6f5c1f
+status: 2
+status_message: null

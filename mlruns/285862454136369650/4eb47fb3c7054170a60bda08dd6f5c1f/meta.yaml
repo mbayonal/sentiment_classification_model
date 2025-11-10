@@ -1,0 +1,14 @@
+artifact_uri: file:///home/manuel-bayona/MIAD-uniandes/Despliegues/sentiment_classification_model/mlruns/285862454136369650/4eb47fb3c7054170a60bda08dd6f5c1f/artifacts
+end_time: 1762743394684
+entry_point_name: ''
+experiment_id: '285862454136369650'
+lifecycle_stage: active
+run_id: 4eb47fb3c7054170a60bda08dd6f5c1f
+run_name: logistic_regression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762743378259
+status: 3
+tags: []
+user_id: usuario
